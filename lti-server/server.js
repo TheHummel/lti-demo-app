@@ -28,14 +28,14 @@ const setup = async () => {
     await lti.deploy({ port: process.env.PORT || 4000 });
 
     // Optional: Register platform if you're setting this up for the first time
-    /* await lti.registerPlatform({
-        url: 'https://platform.url',
-        name: 'Platform Name',
-        clientId: 'TOOLCLIENTID',
-        authenticationEndpoint: 'https://platform.url/auth',
-        accesstokenEndpoint: 'https://platform.url/token',
-        authConfig: { method: 'JWK_SET', key: 'https://platform.url/keyset' }
-    }); */
+    await lti.registerPlatform({
+        url: 'https://lms.uzh.ch',
+        name: 'OLAT UZH',
+        clientId: '8ea57ec8-1ca7-4ed3-830e-65741a4a35c2',
+        authenticationEndpoint: 'https://lms.uzh.ch/lti/auth',
+        accesstokenEndpoint: 'https://lms.uzh.ch/lti/token',
+        authConfig: { method: 'JWK_SET', key: 'https://lms.uzh.ch/lti/keys' }
+    });
 };
 
 setup().catch((e) => console.error(e));
