@@ -10,10 +10,12 @@ lti.setup(process.env.LTI_KEY, {
     appRoute: '/',
     loginRoute: '/login',
     cookies: {
-        secure: false,
-        sameSite: ''
+        secure: true,
+        sameSite: 'None'
     },
-    devMode: true
+    devMode: true,
+    logger: true,
+    debugging: true,
 }, {
     encryptionKey: process.env.ENCRYPTION_KEY
 });
