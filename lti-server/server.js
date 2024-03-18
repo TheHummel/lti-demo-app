@@ -1,24 +1,45 @@
 require('dotenv').config();
 const path = require('path');
 const lti = require('ltijs').Provider;
+const Database = require('ltijs-sequelize')
 
-// Setup provider
-lti.setup(process.env.LTI_KEY, {
-    url: `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
-    // connection: { user: process.env.DB_USER, pass: process.env.DB_PASS }
-}, {
-    appRoute: '/',
-    loginRoute: '/login',
+const db = new Database(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
+    host: process.env.DB_HOST,
+    dialect: 'postgres',
+});
+
+// // Setup provider for mongodb
+// lti.setup(process.env.LTI_KEY, {
+//     url: `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
+//     // connection: { user: process.env.DB_USER, pass: process.env.DB_PASS }
+// }, {
+//     appRoute: '/',
+//     loginRoute: '/login',
+//     cookies: {
+//         secure: true,
+//         sameSite: 'None'
+//     },
+//     devMode: true,
+//     logger: true,
+//     debugging: true,
+// }, {
+//     encryptionKey: process.env.ENCRYPTION_KEY
+// });
+
+// Setup for postgres
+lti.setup(process.env.LTI_KEY,
+  { 
+    plugin: db,
+  },
+  { // Options
+    appRoute: '/', loginRoute: '/login',
     cookies: {
-        secure: true,
-        sameSite: 'None'
+      secure: true,
+      sameSite: 'None',
     },
     devMode: true,
-    logger: true,
-    debugging: true,
-}, {
-    encryptionKey: process.env.ENCRYPTION_KEY
-});
+  }
+)
 
 // LTI launch callback
 lti.onConnect((token, req, res) => {
