@@ -12,4 +12,4 @@ This repository contains a demo app demonstrating integration with OLAT using LT
 1. Add course element "LTI page" to OLAT course
 2. run ```node server.js```
 3. run ```ngrok http [port]```
-4. update the "Initial login URL" in the LTI page settings with the forwarding URL page provided by ngrok (like https://xxxx-xx-xxx-xx-xxx.ngrok-free.app)
+4. update the "Initial login URL" in the LTI page settings with the forwarding URL page provided by ngrok (like https://xxxx-xx-xxx-xx-xxx.ngrok-free.app/login)
