@@ -22,8 +22,11 @@ lti.setup(process.env.LTI_KEY, {
 
 // LTI launch callback
 lti.onConnect((token, req, res) => {
-    console.log(token);
-    return res.send("It's alive!");
+    // console.log(token);
+    // return res.send("It's alive!");
+
+    const nextAppUrl = 'https://lti-demo-app.vercel.app/';
+    res.redirect(nextAppUrl);
 });
 
 const setup = async () => {
