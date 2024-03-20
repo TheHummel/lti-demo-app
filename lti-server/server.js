@@ -32,7 +32,8 @@ lti.setup(process.env.LTI_KEY,
     plugin: db,
   },
   { // Options
-    appRoute: '/', loginRoute: '/login',
+    appRoute: '/',
+    loginRoute: '/login',
     cookies: {
       secure: true,
       sameSite: 'None',
@@ -43,7 +44,7 @@ lti.setup(process.env.LTI_KEY,
 
 // LTI launch callback
 lti.onConnect((token, req, res) => {
-    // console.log(token);
+    console.log(token);
     // return res.send("It's alive!");
 
     const nextAppUrl = 'https://lti-demo-app.vercel.app/';
@@ -63,5 +64,54 @@ const setup = async () => {
         authConfig: { method: 'JWK_SET', key: 'https://lms.uzh.ch/lti/keys' }
     });
 };
+
+// sending grades - NOT WORKING YET
+lti.app.post('/grade', async (req, res) => {
+  try {
+    const idtoken = res.locals.token // IdToken
+    const score = req.body.grade // User numeric score sent in the body
+    // Creating Grade object
+    const gradeObj = {
+      userId: idtoken.user,
+      scoreGiven: score,
+      scoreMaximum: 100,
+      activityProgress: 'Completed',
+      gradingProgress: 'FullyGraded'
+    }
+
+    // Selecting linetItem ID
+    let lineItemId = idtoken.platformContext.endpoint.lineitem // Attempting to retrieve it from idtoken
+    if (!lineItemId) {
+      const response = await lti.Grade.getLineItems(idtoken, { resourceLinkId: true })
+      const lineItems = response.lineItems
+      if (lineItems.length === 0) {
+        // Creating line item if there is none
+        console.log('Creating new line item')
+        const newLineItem = {
+          scoreMaximum: 100,
+          label: 'Grade',
+          tag: 'grade',
+          resourceLinkId: idtoken.platformContext.resource.id
+        }
+        const lineItem = await lti.Grade.createLineItem(idtoken, newLineItem)
+        lineItemId = lineItem.id
+      } else lineItemId = lineItems[0].id
+    }
+
+    // Sending Grade
+    const responseGrade = await lti.Grade.submitScore(idtoken, lineItemId, gradeObj)
+    return res.send(responseGrade)
+  } catch (err) {
+    return res.status(500).send({ err: err.message })
+  }
+})
+
+// retrieving grades - NOT WORKING YET
+lti.app.get('/grade', async (req, res) => {
+  // Retrieves grades from a platform, only for the current user
+  const idtoken = res.locals.token // IdToken
+  const response = await lti.Grade.getScores(idtoken, idtoken.platformContext.endpoint.lineitem, { userId: idtoken.user })
+  return res.send(result)
+})
 
 setup().catch((e) => console.error(e));
