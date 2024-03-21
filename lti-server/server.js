@@ -47,8 +47,19 @@ lti.onConnect((token, req, res) => {
     console.log(token);
     // return res.send("It's alive!");
 
-    const nextAppUrl = 'https://lti-demo-app.vercel.app/';
-    res.redirect(nextAppUrl);
+    // try {
+    //   const idToken = res.locals.token;
+    //   const lineItemId = idToken.platformContext.endpoint.lineitem; // Beispiel-LineItem-ID
+    //   const response = await lti.Grade.getScores(idToken, lineItemId, { userId: idToken.user });
+    //   res.json(response);
+    // } catch (error) {
+    //   console.error("Error retrieving grades: ", error);
+    //   res.status(500).send({ error: error.message });
+    // }
+
+    const lineItemUrl = encodeURIComponent(token.platformContext.endpoint.lineitem);
+    const redirectUrl = `https://lti-demo-app.vercel.app/?lineItemUrl=${lineItemUrl}`;
+    res.redirect(redirectUrl);
 });
 
 const setup = async () => {
