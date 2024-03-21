@@ -21,30 +21,27 @@ const HomePage = () => {
   }, []);
   
   const sendGrade = async () => {
-    const ngrokUrl = 'https://4559-89-206-81-172.ngrok-free.app ';
+    const ngrokUrl = 'https://4559-89-206-81-172.ngrok-free.app';
     const scorePayload = {
       score: 0.7,
       lineItemId: lineItemUrl,
     };
   
-    try {
-      const res = await fetch(`${ngrokUrl}/grade`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(scorePayload),
-      });
-  
-      if (res.ok) {
-        const data = await res.json();
-        console.log("Bewertung erfolgreich gesendet: ", data);
-      } else {
-        console.error('Fehler beim Senden der Bewertung:', res.statusText);
-      }
-    } catch (error) {
-      console.error('Fehler beim Senden der Bewertung:', error);
+    const res = await fetch(`${ngrokUrl}/grade`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(scorePayload),
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      console.log("Bewertung erfolgreich gesendet: ", data);
+    } else {
+      console.error('Fehler beim Senden der Bewertung:', res.statusText);
     }
+
   };
   return (
     <div className="container mx-auto px-4 py-8">
