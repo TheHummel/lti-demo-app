@@ -26,7 +26,7 @@ const HomePage = () => {
         grade: grade
       }
 
-      await ky.post('/grade', { credentials: 'include', json: body, headers: { Authorization: 'Bearer ' + ltik } })
+      await ky.post(`${ngrokUrl}/grade`, { credentials: 'include', json: body, headers: { Authorization: 'Bearer ' + ltik } })
       console.log('Grade sent successfully!')
     } catch (err) {
       console.log(err)
