@@ -56,7 +56,9 @@ const HomePage = () => {
   useEffect(() => {
     const getInfo = async () => {
       try {
-        const launchInfo = await ky.get('https://0508-89-206-81-172.ngrok-free.app/info', { credentials: 'include', headers: { Authorization: 'Bearer ' + getLtik() } }).json()
+        const ltik = getLtik()
+        console.log('ltik useEffect: ', ltik)
+        const launchInfo = await ky.get('https://0508-89-206-81-172.ngrok-free.app/info', { credentials: 'include', headers: { Authorization: 'Bearer ' + ltik} }).json()
         setInfo(launchInfo)
       } catch (err) {
         console.log(err)
