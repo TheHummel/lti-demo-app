@@ -132,9 +132,23 @@ lti.app.get('/grade', async (req, res) => {
 })
 
 lti.app.get('/info', async (req, res) => {
-  // Hier könntest du Logik hinzufügen, um spezifische Informationen zurückzugeben
-  // Zum Testen senden wir einfach eine statische Antwort
-  res.json({ message: "Info Endpunkt wurde erreicht" });
+  // // Test:
+  // res.json({ message: "Info Endpunkt wurde erreicht" });
+  // console.log('request from client: ', req);
+
+  const token = res.locals.token
+  const context = res.locals.context
+  
+  const info = { }
+  if (token.userInfo) {
+    if (token.userInfo.name) info.name = token.userInfo.name
+    if (token.userInfo.email) info.email = token.userInfo.email
+  }
+
+  if (context.roles) info.roles = context.roles
+  if (context.context) info.context = context.context
+
+  return res.send(info)
 });
 
 
