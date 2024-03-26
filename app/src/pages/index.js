@@ -1,11 +1,13 @@
 import '../app/globals.css';
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import ky from 'ky'
     
 
 const HomePage = () => {
+  const [info, setInfo] = useState()
+
   const handleLogin = () => {
     window.location.href = '/login';
   };
