@@ -84,6 +84,7 @@ const setup = async () => {
 
 // sending grades - NOT WORKING YET
 lti.app.post('/grade', async (req, res) => {
+  console.log('POST-request to /grade: ')
   try {
     const idtoken = res.locals.token // IdToken
     const score = req.body.grade // User numeric score sent in the body
@@ -116,6 +117,8 @@ lti.app.post('/grade', async (req, res) => {
     }
 
     // Sending Grade
+    console.log('Sending grade: ', gradeObj)
+    console.log('lineItemId: ', lineItemId)
     const responseGrade = await lti.Grade.submitScore(idtoken, lineItemId, gradeObj)
     return res.send(responseGrade)
   } catch (err) {
@@ -126,6 +129,7 @@ lti.app.post('/grade', async (req, res) => {
 // retrieving grades - NOT WORKING YET
 lti.app.get('/grade', async (req, res) => {
   // Retrieves grades from a platform, only for the current user
+  console.log('GET-request to /grade: ')
   const idtoken = res.locals.token // IdToken
   console.log('idtoken: ', idtoken)
   const response = await lti.Grade.getScores(idtoken, idtoken.platformContext.endpoint.lineitem, { userId: idtoken.user })
@@ -137,6 +141,7 @@ lti.app.get('/info', async (req, res) => {
   // // Test:
   // res.json({ message: "Info Endpunkt wurde erreicht" });
   // console.log('request from client: ', req);
+  console.log('GET-request to /info: ')
 
   const token = res.locals.token
   const context = res.locals.context
