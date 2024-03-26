@@ -45,6 +45,8 @@ lti.setup(process.env.LTI_KEY,
 // LTI launch callback
 lti.onConnect((token, req, res) => {
     console.log(token);
+    const ltik = res.locals.ltik;
+    console.log('ltik: ', ltik);
     // return res.send("It's alive!");
 
     // try {
@@ -57,8 +59,12 @@ lti.onConnect((token, req, res) => {
     //   res.status(500).send({ error: error.message });
     // }
 
-    const lineItemUrl = encodeURIComponent(token.platformContext.endpoint.lineitem);
-    const redirectUrl = `https://lti-demo-app.vercel.app/?lineItemUrl=${lineItemUrl}`;
+    // res.cookie('ltiSession', token.platformContext.ltiVersion, { maxAge: 900000, httpOnly: true });
+
+    // const lineItemUrl = encodeURIComponent(token.platformContext.endpoint.lineitem);
+    // const redirectUrl = `https://lti-demo-app.vercel.app/?lineItemUrl=${lineItemUrl}&ltik=${token}`;
+
+    const redirectUrl = `https://lti-demo-app.vercel.app/?ltik=${ltik}`;
     res.redirect(redirectUrl);
 });
 
@@ -124,5 +130,12 @@ lti.app.get('/grade', async (req, res) => {
   const response = await lti.Grade.getScores(idtoken, idtoken.platformContext.endpoint.lineitem, { userId: idtoken.user })
   return res.send(result)
 })
+
+lti.app.get('/info', async (req, res) => {
+  // Hier könntest du Logik hinzufügen, um spezifische Informationen zurückzugeben
+  // Zum Testen senden wir einfach eine statische Antwort
+  res.json({ message: "Info Endpunkt wurde erreicht" });
+});
+
 
 setup().catch((e) => console.error(e));
