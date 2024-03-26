@@ -153,7 +153,7 @@ lti.app.get('/info', async (req, res) => {
 });
 
 // Names and Roles route
-router.get('/members', async (req, res) => {
+lti.app.get('/members', async (req, res) => {
   try {
     const result = await lti.NamesAndRoles.getMembers(res.locals.token)
     if (result) return res.send(result.members)
