@@ -9,28 +9,6 @@ const HomePage = () => {
   const [info, setInfo] = useState()
 
   const ngrokUrl = 'https://0508-89-206-81-172.ngrok-free.app';
-  
-  const sendGrade = async () => {
-    const scorePayload = {
-      score: 0.7,
-      lineItemId: lineItemUrl,
-    };
-  
-    const res = await fetch(`${ngrokUrl}/grade`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(scorePayload),
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      console.log("Bewertung erfolgreich gesendet: ", data);
-    } else {
-      console.error('Fehler beim Senden der Bewertung:', res.statusText);
-    }
-  };
 
   const getLtik = () => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -39,6 +17,22 @@ const HomePage = () => {
     if (!ltik) throw new Error('Missing lti key.')
     return ltik
   }
+  
+  const sendGrade = async e => {
+    const ltik = getLtik();
+    const grade = 0.42;
+    try {
+      e.preventDefault()
+      const body = {
+        grade: grade
+      }
+
+      await ky.post('/grade', { credentials: 'include', json: body, headers: { Authorization: 'Bearer ' + ltik } })
+      console.log('Grade sent successfully!')
+    } catch (err) {
+      console.log(err)
+    }
+  };
 
   const getGrade = async () => {
     try {
@@ -71,7 +65,7 @@ const HomePage = () => {
       <h1 className="text-3xl font-semibold mb-4">LTI Demo App</h1>
       <p className="text-lg mb-4">This demo app demonstrates the integration with OLAT using LTI.</p>
       <div className="absolute top-4 right-4">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Login</button>
+        {/* <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Login</button> */}
       </div>
       <div className="flex justify-center">
         <button onClick={sendGrade} className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Send Grade</button>
