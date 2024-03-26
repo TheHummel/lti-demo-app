@@ -11,16 +11,6 @@ const HomePage = () => {
   const handleLogin = () => {
     window.location.href = '/login';
   };
-  
-  // const [lineItemUrl, setLineItemUrl] = React.useState('');
-  
-  // useEffect(() => {
-  //     const params = new URLSearchParams(window.location.search);
-  //     const lineItem = params.get('lineItemUrl');
-  //     if (lineItem) {
-  //         setLineItemUrl(decodeURIComponent(lineItem));
-  //     }
-  // }, []);
 
   const ngrokUrl = 'https://0508-89-206-81-172.ngrok-free.app';
   
@@ -44,13 +34,10 @@ const HomePage = () => {
     } else {
       console.error('Fehler beim Senden der Bewertung:', res.statusText);
     }
-
   };
 
   const getLtik = () => {
-    // console.log('window.location.search: ', window.location.search)
     const searchParams = new URLSearchParams(window.location.search)
-    // console.log('searchParams: ', searchParams)
     const ltik = searchParams.get('ltik')
     console.log('ltik on client: ', ltik)
     if (!ltik) throw new Error('Missing lti key.')
@@ -62,12 +49,11 @@ const HomePage = () => {
       try {
         const ltik = getLtik()
         console.log('ltik useEffect: ', ltik)
-        const launchInfo = await ky.get('https://0508-89-206-81-172.ngrok-free.app/info', { credentials: 'include', headers: { Authorization: 'Bearer ' + ltik} }).json()
+        const launchInfo = await ky.get(ngrokUrl + '/info', { credentials: 'include', headers: { Authorization: 'Bearer ' + ltik} }).json()
         console.log('launchInfo: ', launchInfo)
         setInfo(launchInfo)
       } catch (err) {
         console.log(err)
-        // errorPrompt('vraabarFailed trying to retrieve custom parameters! ' + err)
       }
     }
     getInfo()
