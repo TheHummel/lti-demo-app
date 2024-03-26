@@ -1,6 +1,8 @@
 import '../app/globals.css';
 
 import React, {useEffect} from 'react';
+
+import ky from 'ky'
     
 
 const HomePage = () => {
@@ -46,7 +48,7 @@ const HomePage = () => {
   const getLtik = () => {
     const searchParams = new URLSearchParams(window.location.search)
     const ltik = searchParams.get('ltik')
-    console.log('ltik: ', ltik)
+    console.log('ltik on client: ', ltik)
     if (!ltik) throw new Error('Missing lti key.')
     return ltik
   }
@@ -58,7 +60,7 @@ const HomePage = () => {
         setInfo(launchInfo)
       } catch (err) {
         console.log(err)
-        errorPrompt('vraabarFailed trying to retrieve custom parameters! ' + err)
+        // errorPrompt('vraabarFailed trying to retrieve custom parameters! ' + err)
       }
     }
     getInfo()
