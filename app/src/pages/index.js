@@ -46,7 +46,9 @@ const HomePage = () => {
   };
 
   const getLtik = () => {
+    console.log('window.location.search: ', window.location.search)
     const searchParams = new URLSearchParams(window.location.search)
+    console.log('searchParams: ', searchParams)
     const ltik = searchParams.get('ltik')
     console.log('ltik on client: ', ltik)
     if (!ltik) throw new Error('Missing lti key.')
