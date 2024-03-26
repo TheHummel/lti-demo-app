@@ -40,13 +40,13 @@ const HomePage = () => {
     return ltik
   }
 
-  const getMembers = async () => {
+  const getGrade = async () => {
     try {
       const ltik = getLtik();
-      const membersInfo = await ky.get(`${ngrokUrl}/members`, { credentials: 'include', headers: { Authorization: 'Bearer ' + ltik} }).json();
+      const membersInfo = await ky.get(`${ngrokUrl}/grade`, { credentials: 'include', headers: { Authorization: 'Bearer ' + ltik} }).json();
       console.log('membersInfo:', membersInfo);
     } catch (err) {
-      console.error('Fehler beim Abrufen der Mitgliederinformationen:', err);
+      console.error('Error getting grade: ', err);
     }
   };
 
@@ -74,8 +74,8 @@ const HomePage = () => {
         <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Login</button>
       </div>
       <div className="flex justify-center">
-        <button onClick={sendGrade} className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Send grade</button>
-        <button onClick={getMembers} className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 ml-4">Get Members</button>
+        <button onClick={sendGrade} className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Send Grade</button>
+        <button onClick={getGrade} className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 ml-4">Get Grade</button>
       </div>
     </div>
   );
