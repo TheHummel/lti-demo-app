@@ -18,11 +18,10 @@ const HomePage = () => {
     return ltik
   }
   
-  const sendGrade = async e => {
+  const sendGrade = async () => {
     const ltik = getLtik();
     const grade = 0.42;
     try {
-      e.preventDefault()
       const body = {
         grade: grade
       }
