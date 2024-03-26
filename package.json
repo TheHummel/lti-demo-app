@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "dotenv": "^16.4.5",
-    "ky": "^1.2.3",
     "ltijs": "^5.9.3",
     "ltijs-sequelize": "^2.4.4"
   }
