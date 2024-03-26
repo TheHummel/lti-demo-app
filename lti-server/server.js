@@ -131,6 +131,7 @@ lti.app.get('/grade', async (req, res) => {
   return res.send(result)
 })
 
+// Get user and context information
 lti.app.get('/info', async (req, res) => {
   // // Test:
   // res.json({ message: "Info Endpunkt wurde erreicht" });
@@ -138,7 +139,7 @@ lti.app.get('/info', async (req, res) => {
 
   const token = res.locals.token
   const context = res.locals.context
-  
+
   const info = { }
   if (token.userInfo) {
     if (token.userInfo.name) info.name = token.userInfo.name
@@ -150,6 +151,18 @@ lti.app.get('/info', async (req, res) => {
 
   return res.send(info)
 });
+
+// Names and Roles route
+router.get('/members', async (req, res) => {
+  try {
+    const result = await lti.NamesAndRoles.getMembers(res.locals.token)
+    if (result) return res.send(result.members)
+    return res.sendStatus(500)
+  } catch (err) {
+    console.log(err.message)
+    return res.status(500).send(err.message)
+  }
+})
 
 
 setup().catch((e) => console.error(e));
