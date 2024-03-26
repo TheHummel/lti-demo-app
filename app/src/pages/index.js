@@ -1,8 +1,6 @@
 import '../app/globals.css';
 
-import React from 'react';
-
-
+import React, {useEffect} from 'react';
     
 
 const HomePage = () => {
@@ -10,18 +8,19 @@ const HomePage = () => {
     window.location.href = '/login';
   };
   
-  const [lineItemUrl, setLineItemUrl] = React.useState('');
+  // const [lineItemUrl, setLineItemUrl] = React.useState('');
   
-  React.useEffect(() => {
-      const params = new URLSearchParams(window.location.search);
-      const lineItem = params.get('lineItemUrl');
-      if (lineItem) {
-          setLineItemUrl(decodeURIComponent(lineItem));
-      }
-  }, []);
+  // useEffect(() => {
+  //     const params = new URLSearchParams(window.location.search);
+  //     const lineItem = params.get('lineItemUrl');
+  //     if (lineItem) {
+  //         setLineItemUrl(decodeURIComponent(lineItem));
+  //     }
+  // }, []);
+
+  const ngrokUrl = 'https://0508-89-206-81-172.ngrok-free.app';
   
   const sendGrade = async () => {
-    const ngrokUrl = 'https://4559-89-206-81-172.ngrok-free.app';
     const scorePayload = {
       score: 0.7,
       lineItemId: lineItemUrl,
@@ -43,6 +42,29 @@ const HomePage = () => {
     }
 
   };
+
+  const getLtik = () => {
+    const searchParams = new URLSearchParams(window.location.search)
+    const ltik = searchParams.get('ltik')
+    console.log('ltik: ', ltik)
+    if (!ltik) throw new Error('Missing lti key.')
+    return ltik
+  }
+
+  useEffect(() => {
+    const getInfo = async () => {
+      try {
+        const launchInfo = await ky.get('https://0508-89-206-81-172.ngrok-free.app/info', { credentials: 'include', headers: { Authorization: 'Bearer ' + getLtik() } }).json()
+        setInfo(launchInfo)
+      } catch (err) {
+        console.log(err)
+        errorPrompt('vraabarFailed trying to retrieve custom parameters! ' + err)
+      }
+    }
+    getInfo()
+  }, [])
+
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-semibold mb-4">LTI Demo App</h1>
