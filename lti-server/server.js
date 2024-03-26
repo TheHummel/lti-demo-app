@@ -127,8 +127,9 @@ lti.app.post('/grade', async (req, res) => {
 lti.app.get('/grade', async (req, res) => {
   // Retrieves grades from a platform, only for the current user
   const idtoken = res.locals.token // IdToken
+  console.log('idtoken: ', idtoken)
   const response = await lti.Grade.getScores(idtoken, idtoken.platformContext.endpoint.lineitem, { userId: idtoken.user })
-  return res.send(result)
+  return res.send(response)
 })
 
 // Get user and context information
