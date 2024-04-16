@@ -170,5 +170,24 @@ lti.app.get('/members', async (req, res) => {
   }
 })
 
+// Retrieving lineitems
+lti.app.get('/lineitem', async (req, res) => {
+  // Retrieves lineitems from a platform
+  const result  = await lti.Grade.getLineItems(res.locals.token)
+  return res.send(result)
+})
+
+// Creating lineitem
+lti.app.post('/lineitem', async (req, res) => {
+  const lineItem = {
+          scoreMaximum: 100,
+          label: 'Grade',
+          tag: 'grade'
+        }
+  // Sends lineitem to a platform
+  await lti.Grade.createLineItem(res.locals.token, lineItem)
+  return res.sendSatus(201)
+})
+
 
 setup().catch((e) => console.error(e));
