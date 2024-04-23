@@ -37,6 +37,7 @@ lti.setup(process.env.LTI_KEY,
     cookies: {
       secure: true,
       sameSite: 'None',
+      domain: 'https://b58a-89-206-81-34.ngrok-free.app',
     },
     devMode: true,
   }

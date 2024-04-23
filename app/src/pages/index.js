@@ -8,7 +8,7 @@ import ky from 'ky'
 const HomePage = () => {
   const [info, setInfo] = useState()
 
-  const ngrokUrl = 'https://2eb4-89-206-81-34.ngrok-free.app';
+  const ngrokUrl = 'https://b58a-89-206-81-34.ngrok-free.app';
 
   const getLtik = () => {
     const searchParams = new URLSearchParams(window.location.search)
