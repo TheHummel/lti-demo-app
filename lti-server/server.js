@@ -2,13 +2,13 @@ require('dotenv').config();
 const path = require('path');
 const lti = require('ltijs').Provider;
 const Database = require('ltijs-sequelize')
-
+// Initialize database connection
 const db = new Database(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
     host: process.env.DB_HOST,
     dialect: 'postgres',
 });
 
-// // Setup provider for mongodb
+// // Setup LTI provider (mongodb)
 // lti.setup(process.env.LTI_KEY, {
 //     url: `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
 //     // connection: { user: process.env.DB_USER, pass: process.env.DB_PASS }
@@ -26,7 +26,7 @@ const db = new Database(process.env.DB_NAME, process.env.DB_USER, process.env.DB
 //     encryptionKey: process.env.ENCRYPTION_KEY
 // });
 
-// Setup for postgres
+// Setup LTI provider (postgres)
 lti.setup(process.env.LTI_KEY,
   { 
     plugin: db,
@@ -69,6 +69,7 @@ lti.onConnect((token, req, res) => {
     res.redirect(redirectUrl);
 });
 
+// setup function
 const setup = async () => {
     await lti.deploy({ port: process.env.PORT || 4000 });
 
