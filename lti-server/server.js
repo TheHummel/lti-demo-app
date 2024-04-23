@@ -175,7 +175,18 @@ lti.app.get('/members', async (req, res) => {
 // Retrieving lineitems
 lti.app.get('/lineitem', async (req, res) => {
   // Retrieves lineitems from a platform
+  try {
   const result  = await lti.Grade.getLineItems(res.locals.token)
+  } catch (err) {
+    console.log('ERROR MESSAGE: ' + err.message)
+    return res.status(500).send(err.message)
+  }
+  console.log(result)
+  const url = 'https://lti-demo-app.vercel.app'
+  res.setHeader('Access-Control-Allow-Origin', 'https://lti-demo-app.vercel.app'); // You can specify specific origins instead of '*'
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
   return res.send(result)
 })
 
